@@ -48,15 +48,15 @@ def update_play_button(button):
     button.configure(image=new_icon)
     button.photo = new_icon
         
-def skip_song():
+def skip_song(root):
     spotify_client.next()
     time.sleep(.15)
-    get_and_process_data()
+    get_and_process_data(root)
 
-def previous_song():
+def previous_song(root):
     spotify_client.previous()
     time.sleep(.15)
-    get_and_process_data()
+    get_and_process_data(root)
 
 def download_image(url):
     r = requests.get(url)
@@ -71,25 +71,26 @@ def update_album_art():
 def get_and_process_data(root):
     global STATE
     data = spotify_client.get_currently_playing()
-    images_arr = data['item']['album']['images']
-    image_url = list(filter(lambda x: x['height'] == 300, images_arr))[0]['url']
-    
-    process_new_image(image_url)
+    if data is not None:
+        images_arr = data['item']['album']['images']
+        image_url = list(filter(lambda x: x['height'] == 300, images_arr))[0]['url']
+        
+        process_new_image(image_url)
 
-    # is_playing = data['is_playing']
-    # if is_playing:
-    #     STATE = STATE_PLAY
-    # else:
-    #     STATE = STATE_PAUSE
-    # update_play_button(play_pause)
+        is_playing = data['is_playing']
+        if is_playing:
+            STATE = STATE_PLAY
+        else:
+            STATE = STATE_PAUSE
+        update_play_button(play_pause)
 
-    album_name = data['item']['album']['name']
-    artist_name = data['item']['artists'][0]['name']
-    track_name = data['item']['name']
+        album_name = data['item']['album']['name']
+        artist_name = data['item']['artists'][0]['name']
+        track_name = data['item']['name']
 
-    track_label.configure(text=track_name)
-    artist_label.configure(text=artist_name)
-    album_label.configure(text=album_name)
+        track_label.configure(text=track_name)
+        artist_label.configure(text=artist_name)
+        album_label.configure(text=album_name)
 
     root.after(3000, lambda: get_and_process_data(root))
 
@@ -121,34 +122,34 @@ if __name__ == '__main__':
 
     info_frame = tk.Frame(master=root, width=MAX_WIDTH-2*PADDING, height=140, bg=DEFAULT_BG)
     info_frame.pack_propagate(0)
-    info_frame.place(relx=PADDING/MAX_WIDTH, rely=.75)
+    info_frame.place(relx=PADDING/MAX_WIDTH, rely=.67)
     
     art_holder = tk.Label(album_art_frame, image=ART)
     art_holder.image = ART
     art_holder.pack()
 
-    # play_pause_frame = tk.Frame(master=root, width=ICON_SIZE, height=ICON_SIZE, bg=DEFAULT_BG)
-    # play_pause_frame.place(relx=.75, y=MAX_HEIGHT-ICON_SIZE-PADDING)
-    
-    # skip_frame = tk.Frame(master=root, width=ICON_SIZE, height=ICON_SIZE, bg=DEFAULT_BG)
-    # skip_frame.place(relx=.85, y=MAX_HEIGHT-2*ICON_SIZE-PADDING)
+    play_pause_x = .5-(ICON_SIZE/MAX_WIDTH/2)
 
-    # previous_frame = tk.Frame(master=root, width=ICON_SIZE, height=ICON_SIZE, bg=DEFAULT_BG)
-    # previous_frame.place(relx=.65, y=MAX_HEIGHT-2*ICON_SIZE-PADDING)
+    play_pause_frame = tk.Frame(master=root, width=ICON_SIZE, height=ICON_SIZE, bg=DEFAULT_BG)
+    play_pause_frame.place(relx=play_pause_x, y=MAX_HEIGHT-ICON_SIZE-PADDING)
+    
+    skip_frame = tk.Frame(master=root, width=ICON_SIZE, height=ICON_SIZE, bg=DEFAULT_BG)
+    skip_frame.place(relx=play_pause_x+.3, y=MAX_HEIGHT-ICON_SIZE-PADDING)
+
+    previous_frame = tk.Frame(master=root, width=ICON_SIZE, height=ICON_SIZE, bg=DEFAULT_BG)
+    previous_frame.place(relx=play_pause_x-.3, y=MAX_HEIGHT-ICON_SIZE-PADDING)
 
     # # create all buttons
-    # play_pause = create_icon_button(PLAY_ICON, play_pause_frame)
-    # play_pause.configure(command= lambda: play(play_pause))
+    play_pause = create_icon_button(PLAY_ICON, play_pause_frame)
+    play_pause.configure(command= lambda: play(play_pause))
 
-    # skip = create_icon_button(SKIP_ICON, skip_frame)
-    # skip.configure(command=skip_song)
+    skip = create_icon_button(SKIP_ICON, skip_frame)
+    skip.configure(command= lambda: skip_song(root))
 
-    # previous = create_icon_button(PREVIOUS_ICON, previous_frame)
-    # previous.configure(command=previous_song)
+    previous = create_icon_button(PREVIOUS_ICON, previous_frame)
+    previous.configure(command= lambda: previous_song(root))
 
     # Create track info labels
-    INFO_VERTICAL_PADDING = (MAX_HEIGHT-ALBUM_ART_SIZE-2*PADDING)/MAX_HEIGHT
-    INFO_VERTICAL_DISTANCE = .05
     track_label = tk.Label(info_frame, text='Track Name', font=("Montserrat", 16, 'bold'), justify=tk.CENTER,  bg=DEFAULT_BG, fg='#FFF')
     track_label.pack(fill=tk.X)
 
