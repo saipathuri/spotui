@@ -1,0 +1,7 @@
+SPOTIFY_CLIENT_ID = '41f14085f8a84bceb4667dfcd5aa8075'
+SPOTIFY_CLIENT_SECRET = '15babbb6a78e41ebba44c6fa833cd2b5'
+
+OAUTH_TOKEN = 'BQA8pi9jdEFYgz_EO0wTAEMeFqcnuE4nj5mgt8Vq1t4WB9_ko6WyA1TNqnnzdjQgzdhoCMkQtWTFm6ne_O1v_tx94mGhrKCYEOKCZKQW7G3pho74bXsm0xU89GAbGDpiul7zF6K3vENI4i4P_ymSUSKZGulAuXyDDvqv'
+REFRESH_TOKEN = 'AQDhQu-d7cThqBeP3N6QQrejw-UsNt25jgCG-Qlcbn2xUYMCon5oOr51MrfhqIK3zghQ9_I-q_ZCZyVU6fd9O-GRxXdGFPlrUF_pUmhZpmi50RsRi5Pmsq5EEYvlyT6HmYY'
+
+scopes = 'user-read-private user-read-email'
