@@ -106,7 +106,7 @@ if __name__ == '__main__':
     root.attributes('-type', 'dock')
     root.attributes('-fullscreen', True)
     root.config(cursor="none")
-    root.geometry(f'{MAX_WIDTH}x{MAX_HEIGHT}')
+    root.geometry('320x480')
     root.configure(bg=DEFAULT_BG)
     root.focus_force()
 
