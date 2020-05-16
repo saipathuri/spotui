@@ -103,8 +103,9 @@ if __name__ == '__main__':
     STATE = STATE_PAUSE
     # Configure window
     root = tk.Tk()
-    # root.attributes('-type', 'dock')
-    # root.attributes('-fullscreen', True)
+    root.attributes('-type', 'dock')
+    root.attributes('-fullscreen', True)
+    root.config(cursor="none")
     root.geometry(f'{MAX_WIDTH}x{MAX_HEIGHT}')
     root.configure(bg=DEFAULT_BG)
     root.focus_force()
